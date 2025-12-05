@@ -35,7 +35,6 @@ pub fn timer() {
         elapsed_seconds += 1;
     }
     
-    terminal::disable_raw_mode().expect("Failed to disable raw mode");
     println!("Total elapsed time: {} seconds", elapsed_seconds);
     //println!("Debug: timer function end...");
     

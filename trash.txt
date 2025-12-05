@@ -1,0 +1,34 @@
+
+    event::poll(std::time::Duration::from_secs(30)).expect("Event poll failed: line 20 main.rs"); {
+
+        if let Event::Key(key_event) = event::read().expect("Event read failed: line 26 main.rs") {
+            match key_event.code {
+                KeyCode::Char('y') | KeyCode::Char('Y') => {
+                    println!("Starting study timer...");
+                    timer();
+                }
+
+                KeyCode::Char('n') | KeyCode::Char('N') => {
+                    println!("Exiting the program. Goodbye!");
+                    std::process::exit(0);
+                }
+                _ => {
+                    println!("Invalid input. Please enter 'y' or 'n'.");
+                    std::process::exit(1);
+                }
+            }
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+

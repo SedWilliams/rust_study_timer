@@ -1,40 +1,42 @@
 use rust_study_timer::timer;
-use crossterm::{event, event::Event, event::KeyCode, terminal};
+use crossterm::{event::{self, read, Event, KeyCode}, terminal};
+use std::io;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-    println!("--------------------------\r");
-    println!("Terminal Study Timer...\r");
-    println!("--------------------------\r");
+    terminal::SetTitle("Terminal Study Timer");
+
+    println!("--------------------------");
+    println!("Terminal Study Timer...");
+    println!("--------------------------");
     println!("\r");
-    println!("Would you like to start a study timer? (y/n)\r");
+    println!("Would you like to start a study timer? (y/n)...");
 
     //match input to handle yes/no response for starting the timer
     loop {
 
         terminal::enable_raw_mode().expect("Failed to enable raw mode");
 
-        if let Event::Key(key_event) = event::read().expect("Event read failed: line 26 main.rs") {
-
-            match key_event.code {
+        if let Event::Key(event) = read()? {
+            match event.code {
                 KeyCode::Char('y') | KeyCode::Char('Y') => {
                     println!("Starting study timer...");
                     timer();
                     break;
                 }
-
                 KeyCode::Char('n') | KeyCode::Char('N') => {
                     println!("Exiting the program. Goodbye!");
-                    std::process::exit(0);
+                    break;
                 }
                 _ => {
-                    println!("Invalid input. Please enter 'y' or 'n'.");
-                    std::process::exit(1);
+                    continue;
                 }
             }
-
         }
-    }
+    } 
+
+
+    terminal::disable_raw_mode().expect("Failed to disable raw mode");
 
     Ok(())
 }
