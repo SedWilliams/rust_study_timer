@@ -26,6 +26,7 @@ pub fn timer() {
 
     loop {
 
+        //stops the input collection from blocking
         if event::poll(time::Duration::from_millis(1000)).expect("Event poll failed: line 23 lib.rs") {
             if let Event::Key(key_event) = event::read().expect("Event read failed: line 26 lib.rs") {
                 if key_event.code == KeyCode::Char('q') {
