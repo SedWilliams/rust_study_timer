@@ -7,7 +7,8 @@ use crossterm::{event, event::Event, event::KeyCode, terminal};
 pub struct base_time {
     pub id: u32,
     pub time_spent: [i8;3],
-    pub date: chrono::format::DelayedFormat<chrono::format::StrftimeItems<'static>>, //type from
+    pub date: String,
+    //pub date: chrono::format::DelayedFormat<chrono::format::StrftimeItems<'static>>, //type from
                                                                                      //chrono crate
 }
 
@@ -43,7 +44,7 @@ pub fn timer() {
 
     let formatted_time: base_time = secs_to_base_time(elapsed_seconds);
     
-    println!("Session info: {:?} seconds", &formatted_time);
+    //println!("Session info: {:?}", &formatted_time.date);
     //println!("Debug: timer function end...");
     
 }
@@ -56,7 +57,7 @@ fn secs_to_base_time(seconds_from_timer: u64) -> base_time {
     base_time {
         id: generate_id(),
         time_spent: [hours, minutes, seconds],
-        date: Local::now().format("%Y-%m-%d"), 
+        date: Local::now().format("%Y-%m-%d").to_string(), 
     }
 }
 
@@ -71,7 +72,7 @@ mod tests {
         let expected_formatted_time: base_time = base_time {
             id: 1234, //id is arbitrary for this test
             time_spent: [1, 0, 5],
-            date: [0, 0, 0], //date is arbitrary for this test
+            date: Local::now().format("%Y-%m-%d").to_string(), //date is arbitrary for this test
         };
 
         let res: base_time = secs_to_base_time(time_in_secs);
