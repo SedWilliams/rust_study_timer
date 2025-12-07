@@ -4,7 +4,7 @@ use chrono::Local;
 use crossterm::{event, event::Event, event::KeyCode, terminal};
 
 #[derive(Debug)]
-pub struct base_time {
+pub struct BaseTime {
     pub id: u32,
     pub time_spent: [i8;3],
     pub date: String,
@@ -42,19 +42,19 @@ pub fn timer() {
 
     }
 
-    let formatted_time: base_time = secs_to_base_time(elapsed_seconds);
+    let formatted_time: BaseTime = secs_to_base_time(elapsed_seconds);
     
     //println!("Session info: {:?}", &formatted_time.date);
     //println!("Debug: timer function end...");
     
 }
 
-fn secs_to_base_time(seconds_from_timer: u64) -> base_time {
+fn secs_to_base_time(seconds_from_timer: u64) -> BaseTime{
     let hours: i8 = (seconds_from_timer / 3600) as i8;
     let minutes: i8 = ((seconds_from_timer % 3600) / 60) as i8;
     let seconds: i8 = (seconds_from_timer % 60) as i8;
 
-    base_time {
+    BaseTime {
         id: generate_id(),
         time_spent: [hours, minutes, seconds],
         date: Local::now().format("%Y-%m-%d").to_string(), 
@@ -69,13 +69,13 @@ mod tests {
     fn test_secs_to_base_time() {
         let time_in_secs: u64 = 3605; //1 hour, 0 minutes, 5 seconds
         
-        let expected_formatted_time: base_time = base_time {
+        let expected_formatted_time: BaseTime = BaseTime {
             id: 1234, //id is arbitrary for this test
             time_spent: [1, 0, 5],
             date: Local::now().format("%Y-%m-%d").to_string(), //date is arbitrary for this test
         };
 
-        let res: base_time = secs_to_base_time(time_in_secs);
+        let res: BaseTime = secs_to_base_time(time_in_secs);
         
         //given a fixed input time in seconds, the output time_spent should match
         //expected_formatted_time's time_spent, which represents the correct converstion done
