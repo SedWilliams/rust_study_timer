@@ -37,6 +37,7 @@ Note: Program uses system date/time. Please ensure your system date/time is curr
     * Functionality to allow for adding past study sessions, or sessions tracked elsewhere.
     * Functionality to visualize and format past study sessions from within the program.
     * __Possibly__ Option to set custom study session length at runtime, and then implement sound cues for session end.
+    * Official Builds for UNIX and Windows
 
 ### There will never be a pause/resume function.
 I use this tool personally, and I base my own study system off of Deep Work principles laid out in the work of Cal Newport.
