@@ -1,4 +1,4 @@
-# Terminal Study Timer
+# Terminal Study Log
 
 At the core this is a simple terminal timer designed to time, and log, study sessions.
 
