@@ -1,4 +1,4 @@
-use rust_study_timer::timer;
+use rust_study_timer::*;
 use crossterm::{event::{self, read, Event, KeyCode}, terminal};
 use std::{io};
 use chrono::Local;
@@ -6,6 +6,8 @@ use chrono::Local;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     terminal::SetTitle("Terminal Study Timer");
+
+    append_to_file();
 
     println!("--------------------------");
     println!("Terminal Study Timer...");

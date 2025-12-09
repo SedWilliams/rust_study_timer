@@ -1,9 +1,14 @@
-use rand::prelude::*;
 use std::{io, time, thread};
+use std::fs::{self, OpenOptions, File};
+use std::path::Path;
+
+use rand::prelude::*;
 use chrono::Local;
 use crossterm::{event, event::Event, event::KeyCode, terminal};
+use serde::{Serialize, Deserialize};
+use serde_json::{from_str};
 
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct BaseTime {
     pub id: u32,
     pub time_spent: [i8;3],
@@ -15,6 +20,15 @@ pub struct BaseTime {
 fn generate_id() -> u32 {
     let mut rng = rand::rng();
     rng.random_range(1000..9999)
+}
+
+pub fn append_to_file() {
+    let cwd = std::env::current_dir().unwrap().display().to_string();
+    match fs::exists(format!("{cwd}/time_log.txt")) {
+        Ok(file) => println!("File opened successfully: {:?}", file),
+        Err(e) => println!("Failed to open file: {}", e),
+    }
+
 }
 
 pub fn timer() {
