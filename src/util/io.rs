@@ -1,9 +1,19 @@
-use crossterm::{event::{read, Event, KeyCode}, terminal};
 use std::env;
 use std::fs::{exists, OpenOptions, File};
-use std::io::Write;
+use std::io::{self, Write};
 
 use super::types::TimeLog;
+
+use crossterm::{
+    event::{
+        self, Event, KeyCode, read,
+    },
+    style::Stylize,
+    terminal::{
+        self, LeaveAlternateScreen
+    },
+    execute,
+};
 
 /*****************************************************
  * Program IO functions
@@ -64,9 +74,9 @@ pub fn await_terminate() {
 //welcome message, displays on program start
 pub fn program_welcome() {
     println!("--------------------------");
-    println!("Terminal Study Timer...");
+    println!("{}", " Terminal Study Timer...".blue().bold());
     println!("--------------------------");
-        println!("Would you like to start a study timer? (y/n)...");
+    println!("Would you like to start a study timer? [y/n]...");
 }
 
 //exit msg, displays on program close
@@ -113,5 +123,16 @@ pub fn update_time_log(session_details: &TimeLog) { //abstract file existence ch
             println!("Error checking file existence: {}", e);
         },
     }
+
+    //add silent, blocking, event read that waits for any keypress to continue
+    println!("Press any key to exit...");
+    let _ = read();
+
+    terminal::disable_raw_mode().expect("Failed to disable raw mode");
+    
+    execute!(
+        io::stdout(),
+        LeaveAlternateScreen,
+    ).expect("Failed to leave alternate screen");
 
 }

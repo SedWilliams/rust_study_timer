@@ -9,7 +9,14 @@ use super::io::update_time_log;
 use super::secs_to_time_log::secs_to_time_log;
 use super::types::TimeLog;
 
-use crossterm::{event, event::Event, event::KeyCode, terminal};
+use crossterm::{
+    event::{
+        self, Event, KeyCode
+    },
+    style::Stylize,
+    terminal,
+    execute
+};
 
 pub fn timer() {
     //println!("Debug: timer funtion start...");
@@ -37,8 +44,6 @@ pub fn timer() {
         //run secs_to_base_time function to convert elapsed_seconds into base_time struct
 
     }
-
-    terminal::disable_raw_mode().expect("Failed to disable raw mode");
 
     let formatted_time: TimeLog = secs_to_time_log(elapsed_seconds);
     update_time_log(&formatted_time);
