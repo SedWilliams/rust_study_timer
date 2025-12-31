@@ -22,7 +22,7 @@ use super::types::TimeLog;
 //if yes -> callback()
 //if no -> terminate prgm
 
-pub fn handle_yes_no(cb: fn()) {
+pub fn handle_yes_no(callback: fn()) {
     
     //wait for yes/no keypress
     terminal::enable_raw_mode().expect("Failed to enable raw mode");
@@ -46,7 +46,7 @@ pub fn handle_yes_no(cb: fn()) {
     //handle results based on user input
     if result == "y" {
         println!("Starting timer...");
-        cb();
+        callback();
     } else {
         exit_message();
     }
