@@ -34,8 +34,9 @@ use crossterm::{
 
 pub fn handle_yes_no(callback: fn()) {
     
-    //wait for yes/no keypress
     terminal::enable_raw_mode().expect("Failed to enable raw mode");
+
+    //wait for yes/no keypress
     let result = loop {
         if let Event::Key(event) = read().expect("Failed to read event") {
             match event.code {
@@ -51,7 +52,6 @@ pub fn handle_yes_no(callback: fn()) {
             }
         }
     };
-    terminal::disable_raw_mode().expect("Failed to disable raw mode");
     
     //handle results based on user input
     if result == "y" {
@@ -81,7 +81,7 @@ pub fn program_welcome() {
 
 //exit msg, displays on program close
 pub fn exit_message() {
-    println!("Exiting the program. Goodbye!");
+    println!("\rExiting the program. Goodbye!");
 }
 
 //updates time_log.txt with new session details
@@ -97,7 +97,7 @@ pub fn update_time_log(session_details: &TimeLog) { //abstract file existence ch
     //Handles time_log.txt file appending and existence checking
     match exists(&time_log_txt_path) {
         Ok(true) => {
-            println!("Time log file exists. Appending new entry...");
+            println!("\rTime log file exists. Appending new entry...");
             let file = OpenOptions::new()
                 .append(true)
                 .open(&time_log_txt_path)
@@ -110,7 +110,7 @@ pub fn update_time_log(session_details: &TimeLog) { //abstract file existence ch
                 .expect("Failed to write session details to time_log.txt");
         },
         Ok(false) => {
-            println!("Time log file does not exist. Creating new file...");
+            println!("\rTime log file does not exist. Creating new file...");
             let file = File::create(&time_log_txt_path)
                 .expect("Failed to create time_log.txt");
             let json_entry = serde_json::to_string(&session_details)
@@ -125,11 +125,11 @@ pub fn update_time_log(session_details: &TimeLog) { //abstract file existence ch
     }
 
     //add silent, blocking, event read that waits for any keypress to continue
-    println!("Press any key to exit...");
+    println!("\rPress any key to exit...");
     let _ = read();
 
     terminal::disable_raw_mode().expect("Failed to disable raw mode");
-    
+
     execute!(
         io::stdout(),
         LeaveAlternateScreen,

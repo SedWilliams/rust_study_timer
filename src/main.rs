@@ -14,7 +14,7 @@ use std::io;
 
 // program entry point
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    
+
     //let window = window_size()?;
 
     // Resize terminal and scroll up.
@@ -30,7 +30,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     util::io::program_welcome();
 
-    //parse a yes or no response, else display exit message
     util::io::handle_yes_no(util::timer::timer);
 
     Ok(())

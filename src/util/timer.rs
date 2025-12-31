@@ -20,9 +20,7 @@ use crossterm::{
 
 pub fn timer() {
     //println!("Debug: timer funtion start...");
-    println!("Type 'q' to stop the timer.");
-
-    terminal::enable_raw_mode().expect("Failed to enable raw mode");
+    println!("\rType 'q' to stop the timer.");
 
     let mut elapsed_seconds: u64 = 0;
 
@@ -31,7 +29,7 @@ pub fn timer() {
         if event::poll(time::Duration::from_millis(1000)).expect("Event poll failed: line 23 lib.rs") {
             if let Event::Key(key_event) = event::read().expect("Event read failed: line 26 lib.rs") {
                 if key_event.code == KeyCode::Char('q') {
-                    println!("\nTimer stopped.");
+                    println!("\rTimer stopped.");
                     break;
                 }
             }
