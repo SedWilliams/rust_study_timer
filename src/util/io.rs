@@ -83,7 +83,7 @@ pub fn welcome_message() {
 
 //exit msg, displays on program close
 pub fn exit_message() {
-    println!("\rExiting the program. Goodbye!");
+    println!("\rExiting the program. Goodbye!\r");
 }
 
 //updates time_log.txt with new session details
