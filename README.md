@@ -4,10 +4,10 @@ At the core this is a simple terminal timer designed to time, and log, study ses
 
 ## Table of Contents (Project wide)
 
-1. [README.md](README.md#terminal_study_log)
+1. [README.md](README.md#terminal-study-log)
    * [Usage](#usage)
-   * [What I learned](#what_i_learned)
-   * [Problems Encountered](#problems_encountered)
+   * [What I learned](#what-i-learned)
+   * [Problems Encountered](#problems-encountered)
    * [Future Improvements](#future-improvements)
 3. [Overview of DOCS folder](DOCS/DOCS.md)
 4. [Architecture & Program Flow](DOCS/ARCHITECTURE.md)
