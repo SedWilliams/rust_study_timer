@@ -8,7 +8,7 @@ At the core this is a simple terminal timer designed to time, and log, study ses
    * [Usage](#usage)
    * [What I learned](#what_i_learned)
    * [Problems Encountered](#problems_encountered)
-   * [Future Improvements](#future_improvements)
+   * [Future Improvements](#future-improvements)
 3. [Overview of DOCS folder](DOCS/DOCS.md)
 4. [Architecture & Program Flow](DOCS/ARCHITECTURE.md)
     *   High-level overview of how the application runs.
