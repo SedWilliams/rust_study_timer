@@ -4,7 +4,7 @@ At the core this is a simple terminal timer designed to time, and log, study ses
 
 ## Table of Contents (Project wide)
 
-1. [README.md](#readme.md)
+1. [README.md](README.md#terminal_study_log)
 
 ## Usage
 
