@@ -2,7 +2,7 @@
 
 At the core this is a simple terminal timer designed to time, and log, study sessions.
 
-## Table of Contents (Project wide)
+## Table of Contents (Project wide, source of truth)
 
 1. [README.md](README.md#terminal-study-log)
    * [Usage](#usage)
@@ -13,13 +13,13 @@ At the core this is a simple terminal timer designed to time, and log, study ses
    * [Table of contents (DOCS folder)](DOCS/DOCS.md#table-of-contents)
    * [Usage: Quick Start](DOCS/DOCS.md#usage)
 5. [Architecture & Program Flow](DOCS/ARCHITECTURE.md)
-   * [High Level Overview](DOCS/ARCHITECTURE.md#highlevel-overview)
    * [Program Flow](DOCS/ARCHITECTURE.md#program-flow)
    * [Data Flow Diagram](DOCS/ARCHITECTURE.md#data-flow-diagram)
 2. [API Documentation](DOCS/API.md)
    * [Module by module breakdown](DOCS/API.md#api-documentation)
 3. [Module Structure](DOCS/MODULES.md)
-    * Explanation of the file organization and source code layout.
+   * [Directory Tree](DOCS/MODULES.md#directory-tree)
+   * [Module Responsibilities](DOCS/MODULE.md#module-responsibilities)
 
 ## Usage
 
