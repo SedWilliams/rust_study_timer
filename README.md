@@ -2,6 +2,10 @@
 
 At the core this is a simple terminal timer designed to time, and log, study sessions.
 
+## Table of Contents (Project wide)
+
+1. [README.md](#readme.md)
+
 ## Usage
 
 Ensure rust is installed on your system. Then run the following commands in your terminal:
