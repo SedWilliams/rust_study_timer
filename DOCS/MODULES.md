@@ -2,14 +2,6 @@
 
 This document explains the file and directory structure of the `rust_study_timer`.
 
-## High-Level Overview
-
-The application is a CLI-based study timer that:
-1.  Initializes a dedicated terminal interface.
-2.  Prompts the user to start a session.
-3.  Runs a timer loop that counts execution time.
-4.  Upon completion, saves the session data to a local log file.
-
 ## Directory Tree
 
 ```
