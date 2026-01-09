@@ -5,7 +5,7 @@ This is a simple terminal timer designed to time and log study sessions.
 ## Table of Contents (Project wide, source of truth)
 
 1. [README.md](README.md#terminal-study-log)
-   * [Usage](#usage)
+   * [Usage: Quick Start](#usagequick-start)
    * [What I learned](#what-i-learned)
    * [Problems Encountered](#problems-encountered)
    * [Future Improvements](#future-improvements)
@@ -21,7 +21,7 @@ This is a simple terminal timer designed to time and log study sessions.
    * [Directory Tree](DOCS/MODULES.md#directory-tree)
    * [Module Responsibilities](DOCS/MODULE.md#module-responsibilities)
 
-## Usage
+## Usage: Quick Start
 
 Ensure rust is installed on your system. Then run the following commands in your terminal:
 
