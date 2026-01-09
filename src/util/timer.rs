@@ -12,7 +12,8 @@ use super::types::TimeLog;
 use crossterm::{
     event::{
         self, Event, KeyCode
-    }
+    },
+    execute,
 };
 
 pub fn timer() {
@@ -22,14 +23,33 @@ pub fn timer() {
     let mut elapsed_seconds: u64 = 0;
     let start_time = std::time::Instant::now();
 
+    let spinner_frames = vec!["|", "/", "-", "\\"];
+    let mut current_frame = 0;
+
     loop {
 
-        if event::poll(time::Duration::from_millis(1000)).expect("Event poll failed: line 23 lib.rs") {
+        if current_frame >= spinner_frames.len() {
+            current_frame = 0;
+        }
+        execute!(
+            std::io::stdout(),
+            crossterm::cursor::MoveToColumn(0),
+            crossterm::style::Print(format!(
+                "\rElapsed time: {} seconds {} ",
+                start_time.elapsed().as_secs(),
+                spinner_frames[current_frame]
+            ))
+        ).expect("Failed to write to stdout");
+        current_frame+=1;
+
+        if event::poll(time::Duration::from_millis(100)).expect("Event poll failed: line 23 lib.rs") {
             if let Event::Key(key_event) = event::read().expect("Event read failed: line 26 lib.rs") {
                 if key_event.code == KeyCode::Char('q') {
-                    println!("\rTimer stopped.");
+                    println!("\n\rTimer stopped.");
                     println!("");
                     break;
+                } else {
+                    continue;
                 }
             }
         }

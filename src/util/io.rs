@@ -112,6 +112,11 @@ pub fn clear_terminal() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+//static spinner animation
+pub fn spinner_animation() {
+    unimplemented!();
+}
+
 //updates time_log.txt with new session details
 pub fn update_time_log(session_details: &TimeLog) { //abstract file existence check into its own function
  
@@ -151,6 +156,8 @@ pub fn update_time_log(session_details: &TimeLog) { //abstract file existence ch
             println!("Error checking file existence: {}", e);
         },
     }
+
+    println!("\r{}\n\r", &session_details);
 
     //add silent, blocking, event read that waits for any keypress to continue
     println!("\rPress any key to exit...\r");

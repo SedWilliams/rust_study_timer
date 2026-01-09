@@ -13,7 +13,7 @@ pub fn secs_to_time_log(seconds_from_timer: u64) -> TimeLog {
     TimeLog {
         id: generate_id(),
         time_spent: [hours, minutes, seconds],
-        date: Local::now().format("%Y-%m-%d").to_string(), 
+        date: Local::now().format("%m-%d-%Y").to_string(), 
     }
 }
 
