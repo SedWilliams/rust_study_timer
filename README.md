@@ -46,6 +46,7 @@ Note: Program uses system date/time. Please ensure your system date/time is curr
 
 * terminal IO (Rust Specific)
 * file IO
+* 'Box' pointer type
 * chrono crate for date/time Handling
 * serde/serde\_json crates for serialization/deserialization (JSON in this project)
 * crossterm crate for terminal manipulation and event handling

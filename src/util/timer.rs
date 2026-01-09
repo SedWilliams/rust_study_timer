@@ -12,10 +12,7 @@ use super::types::TimeLog;
 use crossterm::{
     event::{
         self, Event, KeyCode
-    },
-    style::Stylize,
-    terminal,
-    execute
+    }
 };
 
 pub fn timer() {
@@ -23,6 +20,7 @@ pub fn timer() {
     println!("\rType 'q' to stop the timer.\r");
 
     let mut elapsed_seconds: u64 = 0;
+    let start_time = std::time::Instant::now();
 
     loop {
 
@@ -36,11 +34,7 @@ pub fn timer() {
             }
         }
         
-        //this loop is slept by 1 second by the poll function above
-        //increment elapsed seconds
-        elapsed_seconds += 1;
-
-        //run secs_to_base_time function to convert elapsed_seconds into base_time struct
+        elapsed_seconds = start_time.elapsed().as_secs();
 
     }
 

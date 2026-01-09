@@ -1,17 +1,17 @@
 use std::env;
 use std::fs::{exists, OpenOptions, File};
 use std::io::{self, Write};
+use std::error::Error;
 
 use super::types::TimeLog;
 
 use crossterm::{
     event::{
-        self, Event, KeyCode, read,
+        Event, KeyCode, read,
     },
     style::Stylize,
-    terminal::{
-        self, LeaveAlternateScreen
-    },
+    terminal::*,
+    cursor::*,
     execute,
 };
 
@@ -33,8 +33,6 @@ use crossterm::{
 //if no -> terminate prgm
 
 pub fn handle_yes_no(callback: fn()) {
-    
-    terminal::enable_raw_mode().expect("Failed to enable raw mode");
 
     //wait for yes/no keypress
     let result = loop {
@@ -60,13 +58,8 @@ pub fn handle_yes_no(callback: fn()) {
         callback();
     } else {
         exit_message();
-        terminal::disable_raw_mode().expect("Failed to disable raw mode");
+        clear_terminal().expect("Failed to deconstruct crossterm terminal");
     }
-}
-
-//non-blocking wait for termination keypress
-pub fn await_terminate() {
-    unimplemented!();
 }
 
 /*****************************************************
@@ -84,6 +77,39 @@ pub fn welcome_message() {
 //exit msg, displays on program close
 pub fn exit_message() {
     println!("\rExiting the program. Goodbye!\r");
+}
+
+//sets up terminal for program use
+pub fn set_terminal() -> Result<(), Box<dyn Error>> {
+
+    execute!(
+        io::stdout(),
+        SetTitle("Study Timer"),
+        //enter alternate terminal buffer; MAX: 2 buffers
+        EnterAlternateScreen,
+        //SetBackgroundColor(Color::DarkGrey),
+        //SetForegroundColor(Color::Blue),
+        MoveTo(0, 0),
+    )?;
+    
+    welcome_message();
+
+    enable_raw_mode().expect("Failed to enable raw mode");
+
+    Ok(())
+}
+
+//clears terminal and resets to normal screen
+pub fn clear_terminal() -> Result<(), Box<dyn Error>> {
+
+    execute!(
+        io::stdout(),
+        LeaveAlternateScreen,
+    ).expect("Failed to leave alternate screen");
+
+    disable_raw_mode().expect("Failed to disable raw mode");
+
+    Ok(())
 }
 
 //updates time_log.txt with new session details
@@ -129,12 +155,4 @@ pub fn update_time_log(session_details: &TimeLog) { //abstract file existence ch
     //add silent, blocking, event read that waits for any keypress to continue
     println!("\rPress any key to exit...\r");
     let _ = read();
-
-    terminal::disable_raw_mode().expect("Failed to disable raw mode");
-
-    execute!(
-        io::stdout(),
-        LeaveAlternateScreen,
-    ).expect("Failed to leave alternate screen");
-
 }

@@ -3,10 +3,12 @@ use super::generate_id;
 
 use chrono::Local;
 
+
+//MOVE THIS LOGIC TO IMPL BLOCK FOR TimeLog
 pub fn secs_to_time_log(seconds_from_timer: u64) -> TimeLog {
-    let hours: i8 = (seconds_from_timer / 3600) as i8;
-    let minutes: i8 = ((seconds_from_timer % 3600) / 60) as i8;
-    let seconds: i8 = (seconds_from_timer % 60) as i8;
+    let hours = seconds_from_timer / 3600;
+    let minutes = (seconds_from_timer % 3600) / 60;
+    let seconds = seconds_from_timer % 60;
 
     TimeLog {
         id: generate_id(),
