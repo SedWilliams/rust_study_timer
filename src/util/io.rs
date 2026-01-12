@@ -55,11 +55,11 @@ pub fn await_yes_no() -> Result<String, Box<dyn Error>> {
     Ok(result)
 }
 
-pub fn handle_yes_no(result: String, callback: fn()) -> Result<(), Box<dyn Error>> {
+pub fn handle_yes_no(result: String, callback:fn()->Result<(),Box<dyn Error>>) -> Result<(), Box<dyn Error>> {
     if result == "y" {
         println!("");
         println!("\rStarting timer...\r");
-        callback();
+        callback()?;
     } else {
         exit_message();
         clear_terminal()?;
