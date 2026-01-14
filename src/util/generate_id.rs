@@ -1,3 +1,7 @@
+/*****************************************
+* move to impl for TimeLog for simplicity
+*****************************************/
+
 use rand::prelude::*;
 
 pub fn generate_id() -> u32 {
