@@ -2,24 +2,17 @@
  * Program IO functions
  *****************************************************/
 use std::env;
-use std::fs::{exists, OpenOptions, File};
+use std::fs::{File, OpenOptions, exists};
 use std::io::{self, Write};
 
-use super::types::{
-    TimeLog,
-    TimerCallback,
-    StringResult,
-    UnitResult
-};
+use super::types::{StringResult, TimeLog, TimerCallback, UnitResult};
 
 use crossterm::{
-    event::{
-        Event, KeyCode, read,
-    },
+    cursor::*,
+    event::{Event, KeyCode, read},
+    execute,
     style::Stylize,
     terminal::*,
-    cursor::*,
-    execute
 };
 
 /*****************************************************
@@ -35,7 +28,6 @@ use crossterm::{
 //if yes -> callback()
 //if no -> terminate prgm
 pub fn await_yes_no() -> StringResult {
-
     //wait for yes/no keypress and store result in 'result': String
     let result: String = loop {
         if let Event::Key(key) = read()? {
@@ -53,7 +45,7 @@ pub fn await_yes_no() -> StringResult {
             }
         }
     };
-    
+
     //pass ownership of result String back to caller
     Ok(result)
 }
@@ -65,7 +57,7 @@ pub fn handle_yes_no(result: String, callback: TimerCallback) -> UnitResult {
         callback()?;
     } else {
         exit_message();
-        clear_terminal()?;
+        clear_terminal();
     }
     Ok(())
 }
@@ -88,7 +80,8 @@ pub fn exit_message() {
 }
 
 //sets up terminal for program use
-pub fn set_terminal() -> UnitResult {
+pub fn set_terminal() {
+    //if fails -> propogate error up
 
     execute!(
         io::stdout(),
@@ -98,26 +91,26 @@ pub fn set_terminal() -> UnitResult {
         //SetBackgroundColor(Color::DarkGrey),
         //SetForegroundColor(Color::Blue),
         MoveTo(0, 0),
-    ).expect("Please run 'cargo fetch'");
-    
+    ).unwrap_or_else(|error| {
+        panic!("\n\rCrossterm error while setting terminal: {}. Please restart terminal and run 'cargo fetch' to install Crossterm.", error);
+    });
+
     welcome_message();
 
-    enable_raw_mode().expect("Please run 'cargo fetch'");
-
-    Ok(())
+    enable_raw_mode().unwrap_or_else(|error| {
+        panic!("\n\rCrossterm error while enabling raw mode: {}. Please restart terminal and run 'cargo fetch' to install Crossterm.", error);
+    });
 }
 
 //clears terminal and resets to normal screen
-pub fn clear_terminal() -> UnitResult {
+pub fn clear_terminal() {
+    execute!(io::stdout(), LeaveAlternateScreen).unwrap_or_else(|error| {
+        panic!("\n\rCrossterm error while clearing terminal: {}. Please restart terminal and run 'cargo fetch' to install Crossterm.", error);
+    });
 
-    execute!(
-        io::stdout(),
-        LeaveAlternateScreen,
-    ).expect("Failed to leave alternate screen");
-
-    disable_raw_mode().expect("Failed to disable raw mode");
-
-    Ok(())
+    disable_raw_mode().unwrap_or_else(|error| {
+        panic!("\n\rCrossterm error while disabling raw mode: {}. Please restart terminal and run 'cargo fetch' to install Crossterm.", error);
+    });
 }
 
 //static spinner animation
@@ -126,8 +119,9 @@ pub fn spinner_animation() {
 }
 
 //updates time_log.txt with new session details
-pub fn update_time_log(session_details: &TimeLog) { //abstract file existence check into its own function
- 
+pub fn update_time_log(session_details: &TimeLog) {
+    //abstract file existence check into its own function
+
     let time_log_txt_path = env::current_exe()
         .unwrap()
         .parent()
@@ -142,30 +136,47 @@ pub fn update_time_log(session_details: &TimeLog) { //abstract file existence ch
             let file = OpenOptions::new()
                 .append(true)
                 .open(&time_log_txt_path)
-                .expect("Failed to open time_log.txt for appending");
+                .unwrap_or_else(|error| {
+                    clear_terminal();
+                    panic!("\n\rFailed to open time_log.txt for appending: {}", error);
+                });
 
-            let json_entry = serde_json::to_string(&session_details)
-                .expect("Failed to serialize session details to JSON");
+            let json_entry = serde_json::to_string(&session_details).unwrap_or_else(|error| {
+                clear_terminal();
+                panic!("\n\rFailed to serialize session details to JSON: {}", error);
+            });
 
             writeln!(&file, "{}", json_entry)
-                .expect("Failed to write session details to time_log.txt");
-        },
+                .expect("Failed to write session details to time_log.txt, and session was not stored. Please file an issue.");
+        }
+
         Ok(false) => {
             println!("\rTime log file does not exist. Creating new file...");
-            let file = File::create(&time_log_txt_path)
-                .expect("Failed to create time_log.txt");
-            let json_entry = serde_json::to_string(&session_details)
-                .expect("Failed to serialize session details to JSON");
-            writeln!(&file, "{}", json_entry)
-                .expect("Failed to write session details to time_log.txt");
 
-        },
-        Err(e) => {
-            println!("Error checking file existence: {}", e);
-        },
+            let file = File::create(&time_log_txt_path).unwrap_or_else(|error| {
+                clear_terminal();
+                panic!("\n\rFailed to create time_log.txt: {}", error);
+            });
+
+            let json_entry = serde_json::to_string(&session_details).unwrap_or_else(|error| {
+                clear_terminal();
+                panic!("\n\rFailed to serialize session details to JSON: {}", error);
+            });
+
+            writeln!(&file, "{}", json_entry).unwrap_or_else(|error| {
+                clear_terminal();
+                panic!("\n\rFailed to write session details to time_log.txt, and session was not stored. Please file an issue: {}", error);
+            });
+        }
+
+        Err(error) => {
+            clear_terminal();
+            panic!("Error checking file existence: {}", error);
+        }
     }
 
-    println!("\r{}\n\r", &session_details);
+    //show the user the session details that were logged
+    println!("\r Logged: {}\n\r", &session_details);
 
     //add silent, blocking, event read that waits for any keypress to continue
     println!("\rPress any key to exit...\r");
