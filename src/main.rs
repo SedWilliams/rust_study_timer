@@ -1,5 +1,5 @@
-use rust_study_timer::util::types::UnitResult;
-use rust_study_timer::util::{io, timer};
+use stui_timer::util::types::UnitResult;
+use stui_timer::util::{io, timer};
 
 //note from crossterm docs:
 //      New line character will not be processed therefore println! can’t be used, use write! instead
