@@ -68,9 +68,9 @@ pub fn handle_yes_no(result: String, callback: TimerCallback) -> UnitResult {
 
 //welcome message, displays on program start
 pub fn welcome_message() {
-    println!("--------------------------");
-    println!("| {}  |", " Terminal Study Timer".blue().bold());
-    println!("--------------------------");
+    println!("--------------------");
+    println!("|   {}    |", " STUI Timer".blue().bold());
+    println!("--------------------");
     print!("Would you like to start a study timer? [y/n]...\n");
 }
 
