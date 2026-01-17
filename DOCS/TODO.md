@@ -12,9 +12,12 @@
     * await_yes_no()
     * ~~handle_yes_no()~~
     * ~~Implement Dependency Inversion Principle/Dependency Injection~~
-  * Write failing tests for options_on_startup
+  * ~~Write failing tests for options_on_startup~~
   * Develop options_on_startup()
-  
+    * ~~Give startup options~~
+    * handle startup options
+      * ~~Handle start and quit~~
+      * handle 'v' (visualizing past sessions)
 
 ## Future
 * Functionality to visualize and format past study sessions from within the program.
