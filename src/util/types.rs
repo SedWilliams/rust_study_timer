@@ -7,6 +7,7 @@ use std::error::Error;
 //function return types
 pub type UnitResult = Result<(), Box<dyn Error>>;
 pub type StringResult = Result<String, Box<dyn Error>>;
+pub type EventResult = Result<crossterm::event::Event, Box<dyn Error>>;
 pub type TimerCallback = fn() -> Result<(), Box<dyn Error>>;
 
 //stored time log type

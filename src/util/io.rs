@@ -36,15 +36,14 @@ pub trait EventReader {
 pub struct TerminalEventReader {}
 
 impl TerminalEventReader {
-    pub fn new() -> TerminalEventReader {
+    pub fn new() -> Self {
         TerminalEventReader {}
     }
 }
 
 impl EventReader for TerminalEventReader {
     fn read_event(&mut self) -> Result<Event, Box<dyn Error>> {
-        let event = read()?;
-        Ok(event)
+        Ok(read()?)
     }
 }
 
@@ -53,6 +52,7 @@ pub fn await_yes_no<R: EventReader>(reader: &mut R) -> StringResult {
     let result: String = loop {
         if let Event::Key(key) = reader.read_event()? {
             match key.code {
+                //return owned string values
                 KeyCode::Char('y') | KeyCode::Char('Y') => break "y".into(),
                 KeyCode::Char('n') | KeyCode::Char('N') => break "n".into(),
                 _ => continue,
@@ -75,9 +75,6 @@ pub fn handle_yes_no(result: String, callback: TimerCallback) -> UnitResult {
     }
     Ok(())
 }
-
-#[cfg(test)]
-mod tests {}
 
 /*****************************************************
  * OUTPUT FUNCTIONS
