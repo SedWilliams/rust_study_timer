@@ -1,8 +1,7 @@
-use super::types::TimeLog;
 use super::generate_id;
+use super::types::TimeLog;
 
 use chrono::Local;
-
 
 //MOVE THIS LOGIC TO IMPL BLOCK FOR TimeLog
 pub fn secs_to_time_log(seconds_from_timer: u64) -> TimeLog {
@@ -13,8 +12,6 @@ pub fn secs_to_time_log(seconds_from_timer: u64) -> TimeLog {
     TimeLog {
         id: generate_id(),
         time_spent: [hours, minutes, seconds],
-        date: Local::now().format("%m-%d-%Y").to_string(), 
+        date: Local::now().format("%m-%d-%Y").to_string(),
     }
 }
-
-

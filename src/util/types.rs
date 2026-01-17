@@ -4,6 +4,8 @@
 
 use std::error::Error;
 
+use chrono::Local;
+
 //function return types
 pub type UnitResult = Result<(), Box<dyn Error>>;
 pub type StringResult = Result<String, Box<dyn Error>>;
@@ -27,6 +29,21 @@ impl std::fmt::Display for TimeLog {
             "Session ID: {}\n\rTime Spent: {} hours, {} minutes, {} seconds\n\rDate: {}",
             self.id, self.time_spent[0], self.time_spent[1], self.time_spent[2], self.date
         )
+    }
+}
+
+impl From<std::time::Duration> for TimeLog {
+    fn from(time: std::time::Duration) -> TimeLog {
+        let seconds = time.as_secs();
+        let hours = seconds / 3600;
+        let minutes = (seconds % 3600) / 60;
+        let seconds = seconds % 60;
+
+        TimeLog {
+            id: super::generate_id(),
+            time_spent: [hours, minutes, seconds],
+            date: Local::now().format("%m-%d-%Y").to_string(),
+        }
     }
 }
 

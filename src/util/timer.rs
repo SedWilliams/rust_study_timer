@@ -9,7 +9,6 @@ use std::time;
 
 // ../util/
 use super::io::update_time_log;
-use super::secs_to_time_log::secs_to_time_log;
 use super::types::{TimeLog, UnitResult};
 
 use crossterm::{
@@ -21,7 +20,6 @@ pub fn timer() -> UnitResult {
     //println!("Debug: timer funtion start...");
     println!("\rType 'q' to stop the timer.\r");
 
-    let mut elapsed_seconds: u64 = 0;
     let start_time = std::time::Instant::now();
 
     //non-mut, stack-allocated array of spinner frames
@@ -64,12 +62,9 @@ pub fn timer() -> UnitResult {
                 }
             }
         }
-
-        //calculate elapsed seconds
-        elapsed_seconds = start_time.elapsed().as_secs();
     }
 
-    let formatted_time: TimeLog = secs_to_time_log(elapsed_seconds);
+    let formatted_time: TimeLog = TimeLog::from(start_time.elapsed());
     update_time_log(&formatted_time);
 
     Ok(())

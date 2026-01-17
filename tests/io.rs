@@ -1,5 +1,5 @@
 use stui_timer::util::{
-    io::await_yes_no,
+    io::await_startup_choice,
     types::{EventReader, EventResult},
 };
 
@@ -28,27 +28,39 @@ fn make_keypress_event(c: char) -> Event {
     Event::Key(KeyEvent::new(KeyCode::Char(c), KeyModifiers::NONE))
 }
 
-#[test]
-fn await_yes_no_returns_y() {
-    let mut reader = TestEventReader::new(vec![make_keypress_event('y')]);
-    let result = await_yes_no(&mut reader).unwrap();
-    assert!(result == "y");
-}
+#[cfg(test)]
+mod io {
+    use super::*;
 
-#[test]
-fn await_yes_no_returns_n() {
-    let mut reader = TestEventReader::new(vec![make_keypress_event('n')]);
-    let result = await_yes_no(&mut reader).unwrap();
-    assert!(result == "n");
-}
+    #[test]
+    fn await_startup_choice_returns_s() {
+        let mut reader = TestEventReader::new(vec![make_keypress_event('s')]);
+        let result = await_startup_choice(&mut reader).unwrap();
+        assert!(result == "s");
+    }
 
-#[test]
-fn await_yes_no_ignores_other_keys() {
-    let mut reader = TestEventReader::new(vec![
-        make_keypress_event('x'),
-        make_keypress_event('q'),
-        make_keypress_event('y'),
-    ]);
-    let result = await_yes_no(&mut reader).unwrap();
-    assert!(result == "y");
+    #[test]
+    fn await_startup_choice_returns_q() {
+        let mut reader = TestEventReader::new(vec![make_keypress_event('q')]);
+        let result = await_startup_choice(&mut reader).unwrap();
+        assert!(result == "q");
+    }
+
+    #[test]
+    fn await_startup_choice_returns_v() {
+        let mut reader = TestEventReader::new(vec![make_keypress_event('v')]);
+        let result = await_startup_choice(&mut reader).unwrap();
+        assert!(result == "v");
+    }
+
+    #[test]
+    fn await_startup_choice_ignores_other_keys() {
+        let mut reader = TestEventReader::new(vec![
+            make_keypress_event('x'),
+            make_keypress_event('z'),
+            make_keypress_event('s'),
+        ]);
+        let result = await_startup_choice(&mut reader).unwrap();
+        assert!(result == "s");
+    }
 }

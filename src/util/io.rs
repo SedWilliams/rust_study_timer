@@ -19,14 +19,15 @@ use crossterm::{
  * INPUT (handling) FUNCTIONS
  *****************************************************/
 
-pub fn await_yes_no<R: EventReader>(reader: &mut R) -> StringResult {
+pub fn await_startup_choice<R: EventReader>(reader: &mut R) -> StringResult {
     //wait for yes/no keypress and store result in 'result': String
     let result: String = loop {
         if let Event::Key(key) = reader.read_event()? {
             match key.code {
                 //return owned string values
-                KeyCode::Char('y') | KeyCode::Char('Y') => break "y".into(),
-                KeyCode::Char('n') | KeyCode::Char('N') => break "n".into(),
+                KeyCode::Char('s') | KeyCode::Char('S') => break "s".into(),
+                KeyCode::Char('q') | KeyCode::Char('Q') => break "q".into(),
+                KeyCode::Char('v') | KeyCode::Char('V') => break "v".into(),
                 _ => continue,
             }
         }
@@ -44,16 +45,28 @@ pub fn await_yes_no<R: EventReader>(reader: &mut R) -> StringResult {
 //
 //if yes -> callback()
 //if no -> terminate prgm
-pub fn handle_yes_no(result: String, callback: TimerCallback) -> UnitResult {
-    if result == "y" {
+pub fn handle_startup_choice(result: String, callback: TimerCallback) -> UnitResult {
+    if result == "s" {
         println!("");
         println!("\rStarting timer...\r");
         callback()?;
     } else {
         exit_message();
-        clear_terminal();
     }
     Ok(())
+}
+
+pub fn blocking_await_keypress() {
+    //add silent, blocking, event read that waits for any keypress to continue
+    println!("\rPress any key to exit...\r");
+
+    loop {
+        if let Ok(Event::Key(key_event)) = read() {
+            if key_event.kind == KeyEventKind::Press {
+                break;
+            }
+        }
+    }
 }
 
 /*****************************************************
@@ -65,7 +78,7 @@ pub fn welcome_message() {
     println!("--------------------");
     println!("|   {}    |", " STUI Timer".blue().bold());
     println!("--------------------");
-    print!("Would you like to start a study timer? [y/n]...\n");
+    println!("Press 's' to start the timer, 'v' to view logs, or 'q' to quit: ");
 }
 
 //exit msg, displays on program close
@@ -89,11 +102,11 @@ pub fn set_terminal() {
         panic!("\n\rCrossterm error while setting terminal: {}. Please restart terminal and run 'cargo fetch' to install Crossterm.", error);
     });
 
-    welcome_message();
-
     enable_raw_mode().unwrap_or_else(|error| {
         panic!("\n\rCrossterm error while enabling raw mode: {}. Please restart terminal and run 'cargo fetch' to install Crossterm.", error);
     });
+
+    welcome_message();
 }
 
 //clears terminal and resets to normal screen
@@ -110,19 +123,6 @@ pub fn clear_terminal() {
 //static spinner animation
 pub fn spinner_animation() {
     unimplemented!();
-}
-
-pub fn blocking_await_keypress() {
-    //add silent, blocking, event read that waits for any keypress to continue
-    println!("\rPress any key to exit...\r");
-
-    loop {
-        if let Ok(Event::Key(key_event)) = read() {
-            if key_event.kind == KeyEventKind::Press {
-                break;
-            }
-        }
-    }
 }
 
 //updates time_log.txt with new session details

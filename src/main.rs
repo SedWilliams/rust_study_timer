@@ -12,14 +12,14 @@ fn main() -> types::UnitResult {
 
     //handle user input for starting timer -> start timer if yes
     let result: String =
-        util::io::await_yes_no(&mut terminal_event_reader).unwrap_or_else(|error| {
+        util::io::await_startup_choice(&mut terminal_event_reader).unwrap_or_else(|error| {
             io::clear_terminal();
-            panic!("\n\rError while awaiting yes/no input: {}.", error);
+            panic!("\n\rError while awaiting startup input: {}.", error);
         });
 
-    util::io::handle_yes_no(result, util::timer::timer).unwrap_or_else(|error| {
+    util::io::handle_startup_choice(result, util::timer::timer).unwrap_or_else(|error| {
         io::clear_terminal();
-        panic!("\n\rError handling yes/no input: {}", error);
+        panic!("\n\rError handling startup input: {}", error);
     });
 
     util::io::blocking_await_keypress();
