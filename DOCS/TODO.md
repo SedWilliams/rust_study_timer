@@ -10,8 +10,8 @@
 * Feature: options_on_startup
   * Write passing tests for....
     * await_yes_no()
-    * handle_yes_no()
-    * Implement Dependency Inversion Principle/Dependency Injection
+    * ~~handle_yes_no()~~
+    * ~~Implement Dependency Inversion Principle/Dependency Injection~~
   * Write failing tests for options_on_startup
   * Develop options_on_startup()
   
